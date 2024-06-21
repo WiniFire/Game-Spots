@@ -23,19 +23,21 @@ void mainScreenReset()
         system("clear");
     #endif
 
-    cout << "\tГРА \"П'ЯТНАШКИ\"" << endl;
+    cout << "\t\t\t\t\t\t\033[33mГРА \"П'ЯТНАШКИ\"\033[0m" << endl << endl;
 }
 
 short zoneSizeAsk()
 {
     short userChoice;
 
+    cout << endl;
+
     do {
-        cout << "Виберіть режим гра (1 - 8 (3x3); 2 - 15 (4x4)): ";
+        cout << "\t\t\t\t\033[32mОберіть режим гри (1 - 8 (3x3); 2 - 15 (4x4)): \033[0m";
         cin >> userChoice;
 
         if (userChoice == 1 || userChoice == 2) break;
-        else cout << "Був вибран неіснуючий варінт!" << "\nБудь ласка зробіть вибір ще раз!";
+        else cout << "\t\t\t\t\033[31mБув вибран неіснуючий варінт!" << "\n\t\t\t\tБудь ласка зробіть вибір ще раз!\033[0m";
 
         Sleep(4000);
         mainScreenReset();
@@ -48,12 +50,14 @@ short mixingModeAsk()
 {
     short userChoice;
 
+    cout << endl;
+
     do {
-        cout << "Виберіть режим розмішування п'ятнашок (1 - ручне; 2 - комп'ютерне): ";
+        cout << "\t\t\t\t\033[32mВиберіть режим розмішування п'ятнашок (1 - ручне; 2 - комп'ютерне): \033[0m";
         cin >> userChoice;
 
         if (userChoice == 1 || userChoice == 2) break;
-        else cout << "Був вибран неіснуючий варінт!" << "\nБудь ласка зробіть вибір ще раз!";
+        else cout << "\t\t\t\t\033[31mБув вибран неіснуючий варінт!" << "\n\t\t\t\tБудь ласка зробіть вибір ще раз!\033[0m";
 
         Sleep(4000);
         mainScreenReset();
@@ -66,12 +70,14 @@ short playModeAsk()
 {
     short userChoice;
 
+    cout << endl;   
+
     do {
-        cout << "Виберіть кто буде грати (1 - людина; 2 - комп'ютер): ";
+        cout << "\t\t\t\t\033[32mВибір хто буде грати (1 - людина; 2 - комп'ютер): \033[0m";
         cin >> userChoice;
 
         if (userChoice == 1 || userChoice == 2) break;
-        else cout << "Був вибран неіснуючий варінт!" << "\nБудь ласка зробіть вибір ще раз!";
+        else cout << "\t\t\t\t\033[31mБув вибран неіснуючий варінт!" << "\n\t\t\t\tБудь ласка зробіть вибір ще раз!\033[0m";
 
         Sleep(4000);
         mainScreenReset();
@@ -340,14 +346,14 @@ void printField(playZone& field, short zoneType)
 
     if (zoneType == 3)
     {
-        cout << "\t  +=======+" << endl;
+        cout << "\t\t\t\t\t \033[34m         +=======+\033[0m" << endl;
 
         short count = 0;
 
         for (short i = 0; i < zoneType * zoneType; i++) {
             if (count == 0)
             {
-                cout << "\t  | " << field.slot[i];
+                cout << "\t\t\t\t\t          \033[34m|\033[0m " << field.slot[i];
                 count++;
             }
             else if (count == 1)
@@ -357,24 +363,24 @@ void printField(playZone& field, short zoneType)
             }
             else
             {
-                cout << field.slot[i] << "|" << endl;
+                cout << field.slot[i] << "\033[34m|\033[0m" << endl;
                 count = 0;
             }
         }
 
-        cout << "\t  +=======+" << endl;
+        cout << "\t\t\t\t\t          \033[34m+=======+\033[0m" << endl;
     }
 
     else
     {
-        cout << "\t  +=============+" << endl;
+        cout << "\t\t          \t\t\t\033[34m+=============+\033[0m" << endl;
 
         short count = 0;
 
         for (short i = 0; i < zoneType * zoneType; i++) {
             if (count == 0)
             {
-                cout << "\t  | " << field.slot[i];
+                cout << "\t\t\t\t\t        \033[34m|\033[0m " << field.slot[i];
                 count++;
             }
             else if (count == 1 || count == 2)
@@ -384,15 +390,15 @@ void printField(playZone& field, short zoneType)
             }
             else
             {
-                cout << ' ' << field.slot[i] << " |" << endl;
+                cout << ' ' << field.slot[i] << " \033[34m|\033[0m" << endl;
                 count = 0;
             }
         }
 
-        cout << "\t  +=============+" << endl;
+        cout << "\t\t            \t\t\t\033[34m+=============+\033[0m" << endl;
     }
 
-    cout << endl;
+    cout << endl << endl;
 }
 
 bool getWinCheck(playZone& field, short zoneType)
@@ -508,7 +514,6 @@ int getLastGameNumber(const string& filename) {
 
     string line;
     int lastGameNumber = 0;
-    string gamePrefix = "Гра №";
 
     while (getline(file, line)) {
         if (line[0] == 'Г')
@@ -545,486 +550,503 @@ int main()
     SetConsoleOutputCP(1251);
     #pragma endregion
 
-    mainScreenReset();
-
-    short zoneSize = zoneSizeAsk();
-    short mixingSpotsMode = mixingModeAsk();
-    short playMode = playModeAsk();
-
-    short actionsCount = 0;
-    vector <short> actionsSave;
-
-    short numberOfPermutations = 0;
-
-    playZone fieald;
-
-    auto startPlayTime = chrono::steady_clock::now();
-    auto endPlayTime = chrono::steady_clock::now();
-    double playTime;
-
-    if (zoneSize == 1)
+    while (true)
     {
-        fieald.slot = new string[9];
+        mainScreenReset();
 
-        if (mixingSpotsMode == 1)
+        short zoneSize = zoneSizeAsk();
+        short mixingSpotsMode = mixingModeAsk();
+        short playMode = playModeAsk();
+
+        short actionsCount = 0;
+        vector <short> actionsSave;
+
+        short numberOfPermutations = 0;
+
+        playZone fieald;
+
+        auto startPlayTime = chrono::steady_clock::now();
+        auto endPlayTime = chrono::steady_clock::now();
+        double playTime;
+
+        if (zoneSize == 1)
         {
-            fieald.slot[0] = "1 ";
-            fieald.slot[1] = "2 ";
-            fieald.slot[2] = "3 ";
-            fieald.slot[3] = "4 ";
-            fieald.slot[4] = "5 ";
-            fieald.slot[5] = "6 ";
-            fieald.slot[6] = "7 ";
-            fieald.slot[7] = "8 ";
-            fieald.slot[8] = "  ";
+            fieald.slot = new string[9];
 
-            mainScreenReset();
-            printField(fieald, 3);
-
-            while (true) {
-                short emptyIndex;
-                short waysCount;
-                short* possibleWays = getPossibleWays(fieald, 9, 3, waysCount, emptyIndex);
-                short userActionIndex;
-                string userAction;
-
-                do {
-                    mainScreenReset();
-                    printField(fieald, 3);
-                    cout << endl;
-                    cout << "Виберіть яке число поставити на пусте місце (якщо хочете закінчити перемішування то напишіть - stop): ";
-                    cin >> userAction;
-
-                    if (userAction == "stop") break;
-
-                    if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8")
-                    {
-                        cout << "Виберіть існуюче число!";
-                        Sleep(2000);
-                        continue;
-                    }
-
-                    userAction += " ";
-
-                    for (short i = 0; i < 9; i++) {
-                        if (fieald.slot[i] == userAction)
-                        {
-                            userActionIndex = i;
-                            break;
-                        }
-                    }
-
-                    bool breakActive = false;
-
-                    for (short i = 0; i < waysCount; i++) {
-                        if (possibleWays[i] == userActionIndex)
-                        {
-                            breakActive = true;
-                            break;
-                        }
-                    }
-                    if (breakActive) break;
-                    cout << "Введіть число котре поручь з пустою клітинкою!";
-                    Sleep(2000);
-                } while (true);
-
-                if (userAction == "stop") break;
-
-                swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
-                if (playMode == 2)
-                {
-                    actionsSave.push_back(emptyIndex);
-                    actionsCount++;
-                }
-            }
-
-        }
-
-        else
-        {
-            short randomShuffleCount = rand() % 45 + 41;
-
-            short emptyIndex;
-            short waysCount;
-            short* possibleWays;
-            short pcActionIndex;
-            short noRepeatSave = 0;
-
-            fieald.slot[0] = "1 ";
-            fieald.slot[1] = "2 ";
-            fieald.slot[2] = "3 ";
-            fieald.slot[3] = "4 ";
-            fieald.slot[4] = "5 ";
-            fieald.slot[5] = "6 ";
-            fieald.slot[6] = "7 ";
-            fieald.slot[7] = "8 ";
-            fieald.slot[8] = "  ";
-
-            for (short i = 0; i < randomShuffleCount; i++) {
-                possibleWays = getPossibleWays(fieald, 9, 3, waysCount, emptyIndex);
-                possibleWays = deleteObject(possibleWays, waysCount, noRepeatSave);
-                pcActionIndex = possibleWays[rand() % waysCount];
+            if (mixingSpotsMode == 1)
+            {
+                fieald.slot[0] = "1 ";
+                fieald.slot[1] = "2 ";
+                fieald.slot[2] = "3 ";
+                fieald.slot[3] = "4 ";
+                fieald.slot[4] = "5 ";
+                fieald.slot[5] = "6 ";
+                fieald.slot[6] = "7 ";
+                fieald.slot[7] = "8 ";
+                fieald.slot[8] = "  ";
 
                 mainScreenReset();
                 printField(fieald, 3);
 
-                swap(fieald.slot[pcActionIndex], fieald.slot[emptyIndex]);
+                while (true) {
+                    short emptyIndex;
+                    short waysCount;
+                    short* possibleWays = getPossibleWays(fieald, 9, 3, waysCount, emptyIndex);
+                    short userActionIndex;
+                    string userAction;
 
-                if (playMode == 2)
-                {
-                    actionsSave.push_back(emptyIndex);
-                    actionsCount++;
-                }
+                    do {
+                        mainScreenReset();
+                        printField(fieald, 3);
+                        cout << endl;
+                        cout << "\t  \033[32mВиберіть яке число поставити на пусте місце (якщо хочете закінчити перемішування то напишіть - stop): \033[0m";
+                        cin >> userAction;
 
-                noRepeatSave = emptyIndex;
+                        if (userAction == "stop") break;
 
-                Sleep(100);
-            }
-        }
+                        if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8")
+                        {
+                            cout << "\t\t\t\t\t\t\033[31mВиберіть існуюче число!\033[0m";
+                            Sleep(2000);
+                            continue;
+                        }
 
-        cout << "\nГра починається!\n";
-        Sleep(2000);
+                        userAction += " ";
 
-        if (playMode == 1)
-        {
-            startPlayTime = chrono::steady_clock::now();
-            while (!getWinCheck(fieald, 3)) {
-                short emptyIndex;
-                short waysCount;
-                short* possibleWays = getPossibleWays(fieald, 9, 3, waysCount, emptyIndex);
-                short userActionIndex;
-                string userAction;
+                        for (short i = 0; i < 9; i++) {
+                            if (fieald.slot[i] == userAction)
+                            {
+                                userActionIndex = i;
+                                break;
+                            }
+                        }
 
-                do {
-                    mainScreenReset();
-                    printField(fieald, 3);
-                    cout << endl;
-                    cout << "Виберіть з яке число поставити на пусте місце: ";
-                    cin >> userAction;
+                        bool breakActive = false;
 
-                    if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8")
-                    {
-                        cout << "Виберіть існуюче число!";
+                        for (short i = 0; i < waysCount; i++) {
+                            if (possibleWays[i] == userActionIndex)
+                            {
+                                breakActive = true;
+                                break;
+                            }
+                        }
+                        if (breakActive) break;
+                        cout << "\t\t\t\t\033[31mВведіть число котре поручь з пустою клітинкою!\033[0m";
                         Sleep(2000);
-                        continue;
-                    }
-
-                    userAction += " ";
-
-                    for (short i = 0; i < 9; i++) {
-                        if (fieald.slot[i] == userAction)
-                        {
-                            userActionIndex = i;
-                            break;
-                        }
-                    }
-
-                    bool breakActive = false;
-
-                    for (short i = 0; i < waysCount; i++) {
-                        if (possibleWays[i] == userActionIndex)
-                        {
-                            breakActive = true;
-                            break;
-                        }
-                    }
-                    if (breakActive) break;
-                    cout << "Введіть число котре поручь з пустою клітинкою!";
-                    Sleep(2000);
-                } while (true);
-
-                swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
-                numberOfPermutations++;
-            }
-
-            mainScreenReset();
-            printField(fieald, 3);
-            cout << "Ви перемогли!\n\n\n";
-            endPlayTime = chrono::steady_clock::now();
-            chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
-            playTime = elapsedPlayer.count();
-        }
-
-        else 
-        { 
-            startPlayTime = chrono::steady_clock::now();
-            short emptyIndex;
-            for (short i = actionsCount - 1; i != -1; i--) {
-                mainScreenReset();
-                printField(fieald, 3);
-
-                cout << "Комп'ютер робить хід";
-                for (short j = 0; j < 3; j++) { Sleep(375); cout << " .";}
-                Sleep(375);
-                cout << endl;
-
-                for (short j = 0; j < 9; j++) {
-                    if (fieald.slot[j] == "  ")
-                    {
-                        emptyIndex = j;
-                        break;
-                    }
-                }
-
-                swap(fieald.slot[actionsSave[i]], fieald.slot[emptyIndex]);
-                numberOfPermutations++;
-                if (getWinCheck(fieald, 3)) break;
-            }
-
-            mainScreenReset();
-            printField(fieald, 3);
-            cout << "Комп'ютер переміг!\n\n\n";
-            endPlayTime = chrono::steady_clock::now();
-            chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
-            playTime = elapsedPlayer.count();
-        }
-
-        delete[] fieald.slot;
-    }
-
-    else
-    {
-        fieald.slot = new string[16];
-
-        if (mixingSpotsMode == 1)
-        {
-            fieald.slot[0] = " 1";
-            fieald.slot[1] = " 2";
-            fieald.slot[2] = " 3";
-            fieald.slot[3] = " 4";
-            fieald.slot[4] = " 5";
-            fieald.slot[5] = " 6";
-            fieald.slot[6] = " 7";
-            fieald.slot[7] = " 8";
-            fieald.slot[8] = " 9";
-            fieald.slot[9] = "10";
-            fieald.slot[10] = "11";
-            fieald.slot[11] = "12";
-            fieald.slot[12] = "13";
-            fieald.slot[13] = "14";
-            fieald.slot[14] = "15";
-            fieald.slot[15] = "  ";
-
-            mainScreenReset();
-            printField(fieald, 4);
-
-            while (true) {
-                short emptyIndex;
-                short waysCount;
-                short* possibleWays = getPossibleWays(fieald, 16, 4, waysCount, emptyIndex);
-                short userActionIndex;
-                string userAction;
-
-                do {
-                    mainScreenReset();
-                    printField(fieald, 4);
-                    cout << endl;
-                    cout << "Виберіть яке число поставити на пусте місце (якщо хочете закінчити перемішування то напишіть - stop): ";
-                    cin >> userAction;
+                    } while (true);
 
                     if (userAction == "stop") break;
 
-                    if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8" && userAction != "9" && userAction != "10" && userAction != "11" && userAction != "12" && userAction != "13" && userAction != "14" && userAction != "15")
+                    swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
+                    if (playMode == 2)
                     {
-                        cout << "Виберіть існуюче число!";
-                        Sleep(2000);
-                        continue;
+                        actionsSave.push_back(emptyIndex);
+                        actionsCount++;
                     }
+                }
 
-                    if (userAction == "1" || userAction == "2" || userAction == "3" || userAction == "4" || userAction == "5" || userAction == "6" || userAction == "7" || userAction == "8" || userAction == "9")
+            }
+
+            else
+            {
+                short randomShuffleCount = rand() % 45 + 41;
+
+                short emptyIndex;
+                short waysCount;
+                short* possibleWays;
+                short pcActionIndex;
+                short noRepeatSave = 0;
+
+                fieald.slot[0] = "1 ";
+                fieald.slot[1] = "2 ";
+                fieald.slot[2] = "3 ";
+                fieald.slot[3] = "4 ";
+                fieald.slot[4] = "5 ";
+                fieald.slot[5] = "6 ";
+                fieald.slot[6] = "7 ";
+                fieald.slot[7] = "8 ";
+                fieald.slot[8] = "  ";
+
+                for (short i = 0; i < randomShuffleCount; i++) {
+                    possibleWays = getPossibleWays(fieald, 9, 3, waysCount, emptyIndex);
+                    possibleWays = deleteObject(possibleWays, waysCount, noRepeatSave);
+                    pcActionIndex = possibleWays[rand() % waysCount];
+
+                    mainScreenReset();
+                    printField(fieald, 3);
+
+                    swap(fieald.slot[pcActionIndex], fieald.slot[emptyIndex]);
+
+                    if (playMode == 2)
                     {
-                        userAction = " " + userAction;
+                        actionsSave.push_back(emptyIndex);
+                        actionsCount++;
                     }
 
-                    for (short i = 0; i < 16; i++) {
-                        if (fieald.slot[i] == userAction)
-                        {
-                            userActionIndex = i;
-                            break;
-                        }
-                    }
+                    noRepeatSave = emptyIndex;
 
-                    bool breakActive = false;
-
-                    for (short i = 0; i < waysCount; i++) {
-                        if (possibleWays[i] == userActionIndex)
-                        {
-                            breakActive = true;
-                            break;
-                        }
-                    }
-                    if (breakActive) break;
-                    cout << "Введіть число котре поручь з пустою клітинкою!";
-                    Sleep(2000);
-                } while (true);
-
-                if (userAction == "stop") break;
-
-                swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
-                if (playMode == 2)
-                {
-                    actionsSave.push_back(emptyIndex);
-                    actionsCount++;
+                    Sleep(100);
                 }
             }
 
+            cout << "\n\t\t\t\t\t      \033[33mГра починається!\033[0m\n";
+            Sleep(2000);
+
+            if (playMode == 1)
+            {
+                startPlayTime = chrono::steady_clock::now();
+                while (!getWinCheck(fieald, 3)) {
+                    short emptyIndex;
+                    short waysCount;
+                    short* possibleWays = getPossibleWays(fieald, 9, 3, waysCount, emptyIndex);
+                    short userActionIndex;
+                    string userAction;
+
+                    do {
+                        mainScreenReset();
+                        printField(fieald, 3);
+                        cout << endl;
+                        cout << "\t\t\t\t\033[32mВиберіть яке число поставити на пусте місце: \033[0m";
+                        cin >> userAction;
+
+                        if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8")
+                        {
+                            cout << "\t\t\t\t\t    \033[31mВиберіть існуюче число!\033[0m";
+                            Sleep(2000);
+                            continue;
+                        }
+
+                        userAction += " ";
+
+                        for (short i = 0; i < 9; i++) {
+                            if (fieald.slot[i] == userAction)
+                            {
+                                userActionIndex = i;
+                                break;
+                            }
+                        }
+
+                        bool breakActive = false;
+
+                        for (short i = 0; i < waysCount; i++) {
+                            if (possibleWays[i] == userActionIndex)
+                            {
+                                breakActive = true;
+                                break;
+                            }
+                        }
+                        if (breakActive) break;
+                        cout << "\t\t\t\t\033[31mВведіть число котре поручь з пустою клітинкою!\033[0m";
+                        Sleep(2000);
+                    } while (true);
+
+                    swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
+                    numberOfPermutations++;
+                }
+
+                mainScreenReset();
+                printField(fieald, 3);
+                cout << "\t\t\t\t\t\tВи перемогли!\n\n\n";
+                endPlayTime = chrono::steady_clock::now();
+                chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
+                playTime = elapsedPlayer.count();
+            }
+
+            else
+            {
+                startPlayTime = chrono::steady_clock::now();
+                short emptyIndex;
+                for (short i = actionsCount - 1; i != -1; i--) {
+                    mainScreenReset();
+                    printField(fieald, 3);
+
+                    cout << "\t\t\t\t\t     \033[35mКомп'ютер робить хід";
+                    for (short j = 0; j < 3; j++) { Sleep(250); cout << " ."; }
+                    Sleep(250);
+                    cout << endl;
+
+                    for (short j = 0; j < 9; j++) {
+                        if (fieald.slot[j] == "  ")
+                        {
+                            emptyIndex = j;
+                            break;
+                        }
+                    }
+
+                    swap(fieald.slot[actionsSave[i]], fieald.slot[emptyIndex]);
+                    numberOfPermutations++;
+                    if (getWinCheck(fieald, 3)) break;
+                }
+
+                mainScreenReset();
+                printField(fieald, 3);
+                cout << "\t\t\t\t\t     \033[0m\033[33mКомп'ютер переміг!\033[0m\n\n\n";
+                endPlayTime = chrono::steady_clock::now();
+                chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
+                playTime = elapsedPlayer.count();
+            }
+
+            delete[] fieald.slot;
         }
 
         else
         {
-            short randomShuffleCount = rand() % 101 + 205;
+            fieald.slot = new string[16];
 
-            short emptyIndex;
-            short waysCount;
-            short* possibleWays = getPossibleWays(fieald, 16, 4, waysCount, emptyIndex);
-            short pcActionIndex;
-            short noRepeatSave = 0;
-
-            fieald.slot[0] = " 1";
-            fieald.slot[1] = " 2";
-            fieald.slot[2] = " 3";
-            fieald.slot[3] = " 4";
-            fieald.slot[4] = " 5";
-            fieald.slot[5] = " 6";
-            fieald.slot[6] = " 7";
-            fieald.slot[7] = " 8";
-            fieald.slot[8] = " 9";
-            fieald.slot[9] = "10";
-            fieald.slot[10] = "11";
-            fieald.slot[11] = "12";
-            fieald.slot[12] = "13";
-            fieald.slot[13] = "14";
-            fieald.slot[14] = "15";
-            fieald.slot[15] = "  ";
-
-            for (short i = 0; i < randomShuffleCount; i++) {
-                possibleWays = getPossibleWays(fieald, 16, 4, waysCount, emptyIndex);
-                possibleWays = deleteObject(possibleWays, waysCount, noRepeatSave);
-                pcActionIndex = possibleWays[rand() % waysCount];
+            if (mixingSpotsMode == 1)
+            {
+                fieald.slot[0] = " 1";
+                fieald.slot[1] = " 2";
+                fieald.slot[2] = " 3";
+                fieald.slot[3] = " 4";
+                fieald.slot[4] = " 5";
+                fieald.slot[5] = " 6";
+                fieald.slot[6] = " 7";
+                fieald.slot[7] = " 8";
+                fieald.slot[8] = " 9";
+                fieald.slot[9] = "10";
+                fieald.slot[10] = "11";
+                fieald.slot[11] = "12";
+                fieald.slot[12] = "13";
+                fieald.slot[13] = "14";
+                fieald.slot[14] = "15";
+                fieald.slot[15] = "  ";
 
                 mainScreenReset();
                 printField(fieald, 4);
 
-                swap(fieald.slot[pcActionIndex], fieald.slot[emptyIndex]);
-                if (playMode == 2)
-                {
-                    actionsSave.push_back(emptyIndex);
-                    actionsCount++;
+                while (true) {
+                    short emptyIndex;
+                    short waysCount;
+                    short* possibleWays = getPossibleWays(fieald, 16, 4, waysCount, emptyIndex);
+                    short userActionIndex;
+                    string userAction;
+
+                    do {
+                        mainScreenReset();
+                        printField(fieald, 4);
+                        cout << endl;
+                        cout << "\t  \033[32mВиберіть яке число поставити на пусте місце (якщо хочете закінчити перемішування то напишіть - stop): \033[0m";
+                        cin >> userAction;
+
+                        if (userAction == "stop") break;
+
+                        if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8" && userAction != "9" && userAction != "10" && userAction != "11" && userAction != "12" && userAction != "13" && userAction != "14" && userAction != "15")
+                        {
+                            cout << "\t\t\t\t\t\t\033[31mВиберіть існуюче число!\033[0m";
+                            Sleep(2000);
+                            continue;
+                        }
+
+                        if (userAction == "1" || userAction == "2" || userAction == "3" || userAction == "4" || userAction == "5" || userAction == "6" || userAction == "7" || userAction == "8" || userAction == "9")
+                        {
+                            userAction = " " + userAction;
+                        }
+
+                        for (short i = 0; i < 16; i++) {
+                            if (fieald.slot[i] == userAction)
+                            {
+                                userActionIndex = i;
+                                break;
+                            }
+                        }
+
+                        bool breakActive = false;
+
+                        for (short i = 0; i < waysCount; i++) {
+                            if (possibleWays[i] == userActionIndex)
+                            {
+                                breakActive = true;
+                                break;
+                            }
+                        }
+                        if (breakActive) break;
+                        cout << "\t\t\t\t\033[31mВведіть число котре поручь з пустою клітинкою!\033[0m";
+                        Sleep(2000);
+                    } while (true);
+
+                    if (userAction == "stop") break;
+
+                    swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
+                    if (playMode == 2)
+                    {
+                        actionsSave.push_back(emptyIndex);
+                        actionsCount++;
+                    }
                 }
 
-                noRepeatSave = emptyIndex;
-
-                Sleep(100);
             }
-        }
 
-        cout << "\nГра починається!\n";
-        Sleep(2000);
+            else
+            {
+                short randomShuffleCount = rand() % 101 + 205;
 
-        if (playMode == 1)
-        {
-            startPlayTime = chrono::steady_clock::now();
-            while (!getWinCheck(fieald, 4)) {
-                short emptyIndex = 0;
-                short waysCount = 0;
+                short emptyIndex;
+                short waysCount;
                 short* possibleWays = getPossibleWays(fieald, 16, 4, waysCount, emptyIndex);
-                short userActionIndex = 0;
-                string userAction;
+                short pcActionIndex;
+                short noRepeatSave = 0;
 
-                do {
+                fieald.slot[0] = " 1";
+                fieald.slot[1] = " 2";
+                fieald.slot[2] = " 3";
+                fieald.slot[3] = " 4";
+                fieald.slot[4] = " 5";
+                fieald.slot[5] = " 6";
+                fieald.slot[6] = " 7";
+                fieald.slot[7] = " 8";
+                fieald.slot[8] = " 9";
+                fieald.slot[9] = "10";
+                fieald.slot[10] = "11";
+                fieald.slot[11] = "12";
+                fieald.slot[12] = "13";
+                fieald.slot[13] = "14";
+                fieald.slot[14] = "15";
+                fieald.slot[15] = "  ";
+
+                for (short i = 0; i < randomShuffleCount; i++) {
+                    possibleWays = getPossibleWays(fieald, 16, 4, waysCount, emptyIndex);
+                    possibleWays = deleteObject(possibleWays, waysCount, noRepeatSave);
+                    pcActionIndex = possibleWays[rand() % waysCount];
+
                     mainScreenReset();
                     printField(fieald, 4);
-                    cout << endl;
-                    cout << "Виберіть з яке число поставити на пусте місце: ";
-                    cin >> userAction;
 
-                    if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8" && userAction != "9" && userAction != "10" && userAction != "11" && userAction != "12" && userAction != "13" && userAction != "14" && userAction != "15")
+                    swap(fieald.slot[pcActionIndex], fieald.slot[emptyIndex]);
+                    if (playMode == 2)
                     {
-                        cout << "Виберіть існуюче число!";
-                        Sleep(2000);
-                        continue;
+                        actionsSave.push_back(emptyIndex);
+                        actionsCount++;
                     }
 
-                    if (userAction == "1" || userAction == "2" || userAction == "3" || userAction == "4" || userAction == "5" || userAction == "6" || userAction == "7" || userAction == "8" || userAction == "9")
-                    {
-                        userAction = " " + userAction;
-                    }
+                    noRepeatSave = emptyIndex;
 
-                    for (short i = 0; i < 16; i++) {
-                        if (fieald.slot[i] == userAction)
-                        {
-                            userActionIndex = i;
-                            break;
-                        }
-                    }
-
-                    bool breakActive = false;
-                    for (short i = 0; i < waysCount; i++) {
-                        if (possibleWays[i] == userActionIndex)
-                        {
-                            breakActive = true;
-                            break;
-                        }
-                    }
-                    if (breakActive) break;
-                    cout << "Введіть число котре поручь з пустою клітинкою!";
-                    Sleep(2000);
-                } while (true);
-
-                swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
-                numberOfPermutations++;
+                    Sleep(100);
+                }
             }
 
-            mainScreenReset();
-            printField(fieald, 4);
-            cout << "Ви перемогли!\n\n\n";
-            endPlayTime = chrono::steady_clock::now();
-            chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
-            playTime = elapsedPlayer.count();
-        }
+            cout << "\n\t\t\t\t\t        \033[33mГра починається!\033[0m\n";
+            Sleep(2000);
 
-        else
-        {
-            startPlayTime = chrono::steady_clock::now();
-            short emptyIndex;
-            for (short i = actionsCount - 1; i != -1; i--) {
-                mainScreenReset();
-                printField(fieald, 4);
+            if (playMode == 1)
+            {
+                startPlayTime = chrono::steady_clock::now();
+                while (!getWinCheck(fieald, 4)) {
+                    short emptyIndex = 0;
+                    short waysCount = 0;
+                    short* possibleWays = getPossibleWays(fieald, 16, 4, waysCount, emptyIndex);
+                    short userActionIndex = 0;
+                    string userAction;
 
-                cout << "Комп'ютер робить хід";
-                for (short j = 0; j < 3; j++) { Sleep(375); cout << " ."; }
-                Sleep(375);
-                cout << endl;
+                    do {
+                        mainScreenReset();
+                        printField(fieald, 4);
+                        cout << endl;
+                        cout << "\t\t\t\t\033[32mВиберіть яке число поставити на пусте місце: \033[0m";
+                        cin >> userAction;
 
-                for (short j = 0; j < 16; j++) {
-                    if (fieald.slot[j] == "  ")
-                    {
-                        emptyIndex = j;
-                        break;
-                    }
+                        if (userAction != "1" && userAction != "2" && userAction != "3" && userAction != "4" && userAction != "5" && userAction != "6" && userAction != "7" && userAction != "8" && userAction != "9" && userAction != "10" && userAction != "11" && userAction != "12" && userAction != "13" && userAction != "14" && userAction != "15")
+                        {
+                            cout << "\t\t\t\t\t    \033[31mВиберіть існуюче число!\0330m";
+                            Sleep(2000);
+                            continue;
+                        }
+
+                        if (userAction == "1" || userAction == "2" || userAction == "3" || userAction == "4" || userAction == "5" || userAction == "6" || userAction == "7" || userAction == "8" || userAction == "9")
+                        {
+                            userAction = " " + userAction;
+                        }
+
+                        for (short i = 0; i < 16; i++) {
+                            if (fieald.slot[i] == userAction)
+                            {
+                                userActionIndex = i;
+                                break;
+                            }
+                        }
+
+                        bool breakActive = false;
+                        for (short i = 0; i < waysCount; i++) {
+                            if (possibleWays[i] == userActionIndex)
+                            {
+                                breakActive = true;
+                                break;
+                            }
+                        }
+                        if (breakActive) break;
+                        cout << "\t\t\t\t\033[31mВведіть число котре поручь з пустою клітинкою!\033[0m";
+                        Sleep(2000);
+                    } while (true);
+
+                    swap(fieald.slot[userActionIndex], fieald.slot[emptyIndex]);
+                    numberOfPermutations++;
                 }
 
-                swap(fieald.slot[actionsSave[i]], fieald.slot[emptyIndex]);
-                numberOfPermutations++;
-                if (getWinCheck(fieald, 4)) break;
+                mainScreenReset();
+                printField(fieald, 4);
+                cout << "\t\t\t\t\t\t \033[33mВи перемогли!\033[0m\n\n\n";
+                endPlayTime = chrono::steady_clock::now();
+                chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
+                playTime = elapsedPlayer.count();
             }
 
-            mainScreenReset();
-            printField(fieald, 4);
-            cout << "Комп'ютер переміг!\n\n\n";
-            endPlayTime = chrono::steady_clock::now();
-            chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
-            playTime = elapsedPlayer.count();
+            else
+            {
+                startPlayTime = chrono::steady_clock::now();
+                short emptyIndex;
+                for (short i = actionsCount - 1; i != -1; i--) {
+                    mainScreenReset();
+                    printField(fieald, 4);
+
+                    cout << "\t\t\t\t\t     \033[35mКомп'ютер робить хід\033[0m";
+                    for (short j = 0; j < 3; j++) { Sleep(250); cout << " ."; }
+                    Sleep(250);
+                    cout << endl;
+
+                    for (short j = 0; j < 16; j++) {
+                        if (fieald.slot[j] == "  ")
+                        {
+                            emptyIndex = j;
+                            break;
+                        }
+                    }
+
+                    swap(fieald.slot[actionsSave[i]], fieald.slot[emptyIndex]);
+                    numberOfPermutations++;
+                    if (getWinCheck(fieald, 4)) break;
+                }
+
+                mainScreenReset();
+                printField(fieald, 4);
+                cout << "\t\t\t\t\t     \033[0m\033[33mКомп'ютер переміг!\033[0m\n\n\n";
+                endPlayTime = chrono::steady_clock::now();
+                chrono::duration<double> elapsedPlayer = endPlayTime - startPlayTime;
+                playTime = elapsedPlayer.count();
+            }
+
+            delete[] fieald.slot;
         }
 
-        delete[] fieald.slot;
+        string fileName = "GameStats.txt";
+
+        addGameData(fileName, round(playTime * 100.0) / 100.0, numberOfPermutations);
+
+        cout << "\t\t\t\t\t     \033[36m Статистика цієї гри:\n" << "\t\t\t      Кількість часу, витрачено на збирання п’ятнашок: " << round(playTime * 100.0) / 100.0 << " сек..\n\t\t\t      Кількість перестановок п’ятнашок для збору: " << numberOfPermutations << "\n\033[0m\n";
+
+        short userChoice;
+        Sleep(5000);
+        
+        do {
+            mainScreenReset();
+            cout << endl;
+            cout << "\033[32m\t\t\t     Якщо ви хочете зіграти ще раз напишіть - 1, якщо ні то 2: \033[0m";
+            cin >> userChoice;
+            if (userChoice == 1 || userChoice == 2) break;
+            cout << "\033\n[31m\t\t\t\t\t         Введіть 1 або 2!\033[0m";
+            Sleep(2000);
+        } while (true);
+        if (userChoice == 2) break;
     }
-    
-    string fileName = "GameStats.txt";
-
-    addGameData(fileName, round(playTime * 100.0) / 100.0, numberOfPermutations);
-
-    cout << "Статистика вашої гри:\n" << "Кількість часу, витрачено на збирання п’ятнашок: " << round(playTime * 100.0) / 100.0 << " сек..\nКількість перестановок п’ятнашок для збору: " << numberOfPermutations << "\n\n";
 
     return 0;
 }
